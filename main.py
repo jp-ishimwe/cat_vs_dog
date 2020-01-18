@@ -17,6 +17,27 @@ from os import listdir
 from model import CNN
 from dataset import DatasetLoader
 
+
+
+#Fill free alter the n_features and lr initializations
+output_size = 2 # class label
+n_features = 6 # number of feature maps
+input_size = 3*224*224 # Define the image size
+
+data_root = './Cat_Dog_data'
+
+transformation = transforms.Compose([transforms.ToPILImage(),
+                                     transforms.Resize(255),
+                                 transforms.CenterCrop(224),
+                                 transforms.ToTensor(),
+                               transforms.Normalize((0.1307,), (0.3081,))])
+
+train_d = DatasetLoader(data_root + '/train', transform=transformation)
+test_d = DatasetLoader(data_root + '/test', transform=transformation)
+
+train_loader = torch.utils.data.DataLoader(train_d, batch_size=64, shuffle=True)
+test_loader = torch.utils.data.DataLoader(test_d, batch_size=64, shuffle=True)
+
 accuracy_list = []
 
 def train(epoch, model, perm=torch.arange(0, 784).long()):
@@ -39,7 +60,7 @@ def test(model, perm=torch.arange(0, 784).long()):
     correct = 0
     for data, target in test_loader:
         output = model(data)
-        test_loss += F.nll_loss(output, target, reduction='sum').item() # sum up batch loss                                                               
+        test_loss += F.nll_loss(output, target, reduction='sum').item()                                                               
         pred = output.data.max(1, keepdim=True)[1] # get the index of the max log-probability                                                                 
         correct += pred.eq(target.data.view_as(pred)).cpu().sum().item()
 
@@ -49,17 +70,12 @@ def test(model, perm=torch.arange(0, 784).long()):
     print('\nTest set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(
         test_loss, correct, len(test_loader.dataset),
         accuracy))
+
     
 if __name__ == "__main__":
 
-    #Fill free alter the n_features and lr initializations
-    output_size = 2 # class label
-    n_features = 6 # number of feature maps
-    input_size = 3*224*224 # Define the image size
-
     model_cnn = CNN(input_size, n_features, output_size)
     optimizer = optim.SGD(model_cnn.parameters(), lr=0.01, momentum=0.5)
-    print('Number of parameters: {}'.format(get_n_params(model_cnn)))
     
     for epoch in range(0, 1):
 	train(epoch, model_cnn)
