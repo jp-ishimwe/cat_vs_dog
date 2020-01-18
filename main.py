@@ -50,8 +50,9 @@ def test(model, perm=torch.arange(0, 784).long()):
         test_loss, correct, len(test_loader.dataset),
         accuracy))
     
-if __name__=='main':
-    #Alter the following initialization
+if __name__ == "__main__":
+
+    #Fill free alter the n_features and lr initializations
     output_size = 2 # class label
     n_features = 6 # number of feature maps
     input_size = 3*224*224 # Define the image size
@@ -59,5 +60,9 @@ if __name__=='main':
     model_cnn = CNN(input_size, n_features, output_size)
     optimizer = optim.SGD(model_cnn.parameters(), lr=0.01, momentum=0.5)
     print('Number of parameters: {}'.format(get_n_params(model_cnn)))
+    
+    for epoch in range(0, 1):
+	train(epoch, model_cnn)
+	test(model_cnn)
     
     
