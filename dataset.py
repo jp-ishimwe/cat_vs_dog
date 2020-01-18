@@ -15,7 +15,6 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from os import listdir
 
-data_root = '/home/aims/Desktop/AMMI-AIMS-Ghana-master/AMMI-AIMS-Ghana/Exercises/data/Cat_Dog_data'
  
 class DatasetLoader(Dataset):
     
