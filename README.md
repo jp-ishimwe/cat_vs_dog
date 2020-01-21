@@ -22,3 +22,11 @@ cd cat_vs_dog
 ```bash
 python main.py
 ```
+
+## The model performance and structure
+### The model structure
+![model](experiment1.png)
+
+### Training and testing errors
+![test](test_error.png)
+![train](train_error.png)
