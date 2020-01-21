@@ -29,4 +29,4 @@ python main.py
 
 ### Training and testing errors
 ![test](test_error.png)
-![train](train_error.png)
+![train](train_loss.png)
